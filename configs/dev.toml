@@ -1,0 +1,29 @@
+[server]
+name = "task-scheduler"
+port = 9528
+shutdown_timeout = "30s"
+
+[timing]
+size = 3 // 时间轮的槽位
+tick = 500 // 单位是毫秒
+
+[database]
+host = "127.0.0.1"
+port = 3306
+user = "root"
+password = "123qwe"
+name = "task_platform"
+max_open_conns = 25
+max_idle_conns = 5
+conn_max_lifetime = 300
+
+[redis]
+host = "127.0.01"
+port = "3306"
+user = "root"
+password = "123qwe"
+db = 1
+
+[log]
+level = "info"
+format = "json"  # or "console" for dev
