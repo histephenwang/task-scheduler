@@ -5,20 +5,20 @@ import (
 	"time"
 )
 
+// Queue 延迟队列接口
 type Queue interface {
-	Add(ctx context.Context, taskID string, executeAt time.Time) error    // ZADD
-	Poll(ctx context.Context, now time.Time, limit int) ([]string, error) // ZRANGEBYSCORE + ZREM
-	Remove(ctx context.Context, taskID string) error                      // ZREM
-}
+	// Add 添加延迟任务
+	Add(ctx context.Context, taskID string, executeAt time.Time) error
 
-func Add(ctx context.Context, q Queue, taskID string, executeAt time.Time) error {
-	panic("implement me")
-}
+	// AddWithScore 添加延迟任务（直接用时间戳）
+	AddWithScore(ctx context.Context, taskID string, score int64) error
 
-func Poll(ctx context.Context, q Queue, now time.Time, limit int) ([]string, error) {
-	panic("implement me")
-}
+	// Poll 获取到期任务（原子操作：查询+删除）
+	Poll(ctx context.Context, limit int64) ([]string, error)
 
-func Remove(ctx context.Context, q Queue, taskID string) error {
-	panic("implement me")
+	// Remove 移除任务
+	Remove(ctx context.Context, taskID string) error
+
+	// Len 队列长度
+	Len(ctx context.Context) (int64, error)
 }

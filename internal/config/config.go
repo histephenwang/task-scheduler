@@ -15,10 +15,14 @@ type Config struct {
 }
 
 type RedisConfig struct {
-	Host     string `mapstructure:"host"`
-	Password string `mapstructure:"password"`
-	Port     string `mapstructure:"port"`
-	DB       int    `mapstructure:"db"`
+	Host         string `mapstructure:"host"`
+	Password     string `mapstructure:"password"`
+	DB           int    `mapstructure:"db"`
+	PoolSize     int    `mapstructure:"pool_size"`
+	MinIdleConns int    `mapstructure:"min_idle_conns"`
+	DialTimeout  int    `mapstructure:"dial_timeout"`
+	ReadTimeout  int    `mapstructure:"read_timeout"`
+	WriteTimeout int    `mapstructure:"write_timeout"`
 }
 
 type TimingConfig struct {

@@ -7,6 +7,9 @@ import (
 	"github.com/RussellLuo/timingwheel"
 	"github.com/histephenwang/task-scheduler/internal/config"
 	"github.com/histephenwang/task-scheduler/internal/infra/db/mysql"
+	infraRedis "github.com/histephenwang/task-scheduler/internal/infra/redis"
+	"github.com/histephenwang/task-scheduler/internal/lock"
+	"github.com/histephenwang/task-scheduler/internal/timewheel"
 )
 
 func main() {
@@ -14,6 +17,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	db := mysql.NewDB(&cfg.Database)
+	rc := infraRedis.NewClient(&cfg.Redis)
+
+	defer rc.Close()
 
 	// 初始化时间轮： 假设 tick=100ms，200个槽，那么最大支持 20秒
 	if cfg.Timing.Tick == 0 {
@@ -28,7 +36,12 @@ func main() {
 
 	defer tw.Stop()
 
-	db := mysql.NewDB(&cfg.Database)
+	distLock := lock.NewRedisLock(rc, "scheduler-lock")
+	delayLock := lock.NewRedisLock(rc, "scheduler-delay")
 
-	fmt.Println(db)
+	timewheel.New(cfg.Timing.Tick, cfg.Timing.Size, func(taskID string) {
+
+	})
+
+	fmt.Println(db, distLock, delayLock)
 }

@@ -12,6 +12,11 @@ import (
 type TaskRepository interface {
 	LoadPendingDelay(ctx context.Context, before time.Time, limit int) ([]*model.Task, error)
 	LoadCronTask(ctx context.Context) ([]*model.Task, error)
+	GetByID(ctx context.Context, id string) (*model.Task, error)
+	ListPendingDelayed(ctx context.Context, end time.Time, limit int) ([]*model.Task, error)
+	UpdateStatus(ctx context.Context, taskID string, from, to string) error
+	Create(ctx context.Context, task *model.Task) error
+	Update(ctx context.Context, task *model.Task) error
 
 	UpdateStatusWithLock(ctx context.Context, taskID string, from, to int) error
 }
@@ -24,6 +29,26 @@ func NewTaskRepository(db *sqlx.DB) TaskRepository {
 	return &taskRepository{
 		db: db,
 	}
+}
+
+func (r *taskRepository) Update(ctx context.Context, task *model.Task) error {
+	panic("implement me")
+}
+
+func (r *taskRepository) Create(ctx context.Context, task *model.Task) error {
+	panic("implement me")
+}
+
+func (r *taskRepository) UpdateStatus(ctx context.Context, taskID string, from, to string) error {
+	panic("implement me")
+}
+
+func (r *taskRepository) ListPendingDelayed(ctx context.Context, end time.Time, limit int) ([]*model.Task, error) {
+	panic("implement me")
+}
+
+func (r *taskRepository) GetByID(ctx context.Context, id string) (*model.Task, error) {
+	panic("implement me")
 }
 
 func (r *taskRepository) LoadPendingDelay(ctx context.Context, before time.Time, limit int) ([]*model.Task, error) {
